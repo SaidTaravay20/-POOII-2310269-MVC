@@ -1,0 +1,47 @@
+Plant uml:
+
+@startuml
+participant User
+participant NewEventView
+participant NewEventController
+participant NewEventModel
+participant FileHandler
+
+User -> NewEventView: Click "Guardar"
+activate NewEventView
+
+NewEventView -> NewEventController: saveEvent()
+activate NewEventController
+
+NewEventController -> NewEventModel: validateData()
+activate NewEventModel
+
+NewEventModel -> FileHandler: checkFileExists()
+activate FileHandler
+
+FileHandler -> FileHandler: createFileIfNotExists()
+
+FileHandler -> FileHandler: writeDataToFile()
+FileHandler -> NewEventModel: success/failure()
+deactivate FileHandler
+
+NewEventModel -> NewEventController: validation result
+deactivate NewEventModel
+
+NewEventController -> NewEventView: updateView()
+deactivate NewEventController
+
+NewEventView -> User: Notify "Data saved"
+deactivate NewEventView
+
+User -> NewEventView: Click "Resetear"
+activate NewEventView
+
+NewEventView -> NewEventController: resetFields()
+activate NewEventController
+
+NewEventController -> NewEventView: clearFields()
+deactivate NewEventController
+deactivate NewEventView
+@enduml
+
